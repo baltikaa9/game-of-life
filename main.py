@@ -14,24 +14,27 @@ def draw_grid(screen: Surface, grid: Grid) -> None:
                 pygame.draw.rect(screen, Color.White.value, Rect(x * cell_size, y * cell_size, cell_size, cell_size))
 
 
+def init_grid_cells(grid: Grid) -> Grid:
+    """Создает узор на сетке (в данном случае - крест)"""
+    for i in range(grid.rows):
+        for j in range(grid.cols):
+            if i == (grid.rows // 2 + 1) or j == (grid.cols // 2 + 1):
+                grid.revive_cell(j, i)
+    return grid
+
 
 def main():
     pygame.init()
 
-    rows, cols = 100, 100
-    cell_size = 10
+    rows, cols = 150, 150
+    cell_size = 5
     width, height = cols * cell_size, rows * cell_size
 
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption('Game of Life')
     clock = pygame.time.Clock()
 
-    grid = Grid(rows, cols, cell_size)
-
-    for i in range(rows):
-        for j in range(cols):
-            if i == (rows // 2 + 1) or j == (cols // 2 + 1):
-                grid.revive_cell(j, i)
+    grid = init_grid_cells(Grid(rows, cols, cell_size))
 
     running = True
     playing = False
